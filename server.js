@@ -1,6 +1,6 @@
 const fastify = require('fastify')({ logger: true });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.API_PORT || 8080;
 
 const { createGame } = require('./src/setup/createGame');
 
@@ -8,7 +8,7 @@ fastify.get('/', (req, res) => {
   res.send('Hello!');
 });
 
-fastify.get('/createGame', createGame);
+fastify.post('/createGame', createGame);
 
 const start = () => {
   fastify.listen(PORT);

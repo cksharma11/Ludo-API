@@ -1,8 +1,10 @@
 const axios = require('axios');
 
+const { DB_PORT = 3030 } = process.env;
+
 const registerGame = async (hostName, numberOfPlayers) => {
   return axios
-    .post('http://localhost:3030/createGame', {
+    .post(`http://localhost:${DB_PORT}/createGame`, {
       hostName,
       numberOfPlayers
     })
