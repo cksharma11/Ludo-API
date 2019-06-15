@@ -1,0 +1,17 @@
+# pre-commit hook 
+
+# step 1 : run lint
+
+npm run lint
+
+if [ $? = 1 ]; then
+  exit 1
+fi
+
+# step 2 : run test
+
+npm run test
+
+if [ $? = 1 ]; then
+  exit 1
+fi
