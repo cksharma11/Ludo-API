@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "open": "export UI_PORT=3030 && export API_PORT=4040 && export DB_PORT=5050 && nodemon server.js",
     "lint:script": "eslint . -c .eslintrc.json --ext js,jsx --fix",
     "lint": "npm run lint:script"
   },

@@ -1,4 +1,4 @@
-# run this from the root directory 
+# run this from the root directory
 
 cp ./scripts/pre-commit ./.git/hooks/
 chmod +x ./.git/hooks/pre-commit
