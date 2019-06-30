@@ -2,7 +2,7 @@ const fastify = require('fastify')({ logger: true });
 
 const PORT = process.env.API_PORT;
 
-const { createGame, getPlayers } = require('./src/setup/handlers');
+const { createGame, getPlayers, joinGame } = require('./src/setup/handlers');
 
 fastify.register(require('fastify-cors'));
 
@@ -12,6 +12,7 @@ fastify.get('/', (req, res) => {
 
 fastify.post('/createGame', createGame);
 fastify.post('/players', getPlayers);
+fastify.post('/joinGame', joinGame);
 
 const start = () => {
   fastify.listen(PORT);
