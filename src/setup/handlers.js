@@ -13,7 +13,6 @@ const makeCall = async (body, path) => {
 const createGame = async (req, res) => {
   const { hostName } = req.body;
   const { numberOfPlayers } = req.body;
-
   const response = await makeCall({ hostName, numberOfPlayers }, '/createGame');
   res.send(response.data);
 };
