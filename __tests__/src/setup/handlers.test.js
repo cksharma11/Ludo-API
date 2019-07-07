@@ -15,20 +15,22 @@ describe('handlers', () => {
     responseData = {};
     req = {
       headers: {},
-      body: { hostName: 'testname', numberOfPlayers: 2 }
+      body: {}
     };
     res = {
       send: () => responseData
     };
-  });
 
-  it('should call createGame with correct args', async () => {
+    axios.post.mockReset();
     axios.post.mockImplementation(() =>
       Promise.resolve({
         data: { results: {} }
       })
     );
+  });
 
+  it('should call createGame with correct args', async () => {
+    req.body = { hostName: 'testname', numberOfPlayers: 2 };
     await createGame(req, res);
 
     expect(axios.post).toHaveBeenCalledTimes(1);
@@ -39,18 +41,7 @@ describe('handlers', () => {
   });
 
   it('should call joinGame with correct args', async () => {
-    axios.post.mockReset();
-    req.body = {
-      playerName: 'testname',
-      gameId: 1
-    };
-
-    axios.post.mockImplementation(() =>
-      Promise.resolve({
-        data: { results: {} }
-      })
-    );
-
+    req.body = { playerName: 'testname', gameId: 1 };
     await joinGame(req, res);
 
     expect(axios.post).toHaveBeenCalledTimes(1);
@@ -61,17 +52,7 @@ describe('handlers', () => {
   });
 
   it('should call getPlayers with correct args', async () => {
-    axios.post.mockReset();
-    req.body = {
-      gameId: 11
-    };
-
-    axios.post.mockImplementation(() =>
-      Promise.resolve({
-        data: { results: {} }
-      })
-    );
-
+    req.body = { gameId: 11 };
     await getPlayers(req, res);
 
     expect(axios.post).toHaveBeenCalledTimes(1);
