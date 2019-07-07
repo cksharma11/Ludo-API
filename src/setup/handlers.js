@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { DB_PORT } = process.env;
+const { DB_PORT = 5050 } = process.env;
 
 const makeCall = async (body, path) => {
   return axios
