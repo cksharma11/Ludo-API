@@ -8,7 +8,8 @@
     "test": "jest --passWithNoTests",
     "open": "export UI_PORT=3030 && export API_PORT=4040 && export DB_PORT=5050 && nodemon server.js",
     "lint:script": "eslint . -c .eslintrc.json --ext js,jsx --fix",
-    "lint": "npm run lint:script"
+    "lint": "npm run lint:script",
+    "coverage": "npx jest --coverage"
   },
   "keywords": [],
   "author": "",
