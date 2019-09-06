@@ -1,10 +1,17 @@
 const { getCurrentGame } = require('./util/util');
 
-const getGameData = async (req, res) => {
+const getGameData = (req, res) => {
   const currentGame = getCurrentGame(req);
   res.send(currentGame);
 };
 
+const rollDice = (req, res) => {
+  const currentGame = getCurrentGame(req);
+  currentGame.rollDice();
+  res.send({});
+};
+
 module.exports = {
-  getGameData
+  getGameData,
+  rollDice
 };

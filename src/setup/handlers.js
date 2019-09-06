@@ -28,7 +28,7 @@ const joinGame = async (req, res) => {
   const currentGame = getCurrentGame(req);
   const { playerName, gameId } = req.body;
   const response = await makeCall({ playerName, gameId }, '/joinGame');
-  const { playerId, color } = response;
+  const { playerId, color } = response.data;
   currentGame.addPlayer(new Player(playerId, playerName, color));
   res.send(response.data);
 };

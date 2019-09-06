@@ -11,7 +11,7 @@ const PORT = process.env.API_PORT;
 
 const { createGame, getPlayers, joinGame } = require('./src/setup/handlers');
 
-const { getGameData } = require('./src/gameHandler');
+const { getGameData, rollDice } = require('./src/gameHandler');
 
 const logger = (req, res, next) => {
   // eslint-disable-next-line no-console
@@ -31,6 +31,7 @@ app.post('/createGame', createGame);
 app.post('/players', getPlayers);
 app.post('/joinGame', joinGame);
 app.post('/getGameData', getGameData);
+app.post('/rollDice', rollDice);
 
 // eslint-disable-next-line no-console
 app.listen(PORT, () => console.log(`API Server listening on ${PORT}`));
