@@ -8,4 +8,4 @@ class Dice {
   }
 }
 
-exports.Dice = Dice;
+module.exports = Dice;

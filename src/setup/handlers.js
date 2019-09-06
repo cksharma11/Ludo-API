@@ -1,20 +1,35 @@
 const { makeCall } = require('../httpService');
+const Game = require('../../model/game');
+const Player = require('../../model/player');
+const { getCurrentGame } = require('../util/util');
 
 const createGame = async (req, res) => {
   const { hostName, numberOfPlayers } = req.body;
   const response = await makeCall({ hostName, numberOfPlayers }, '/createGame');
-  res.send(response.data);
+  const {
+    gameId,
+    numberOfPlayers: playersCount,
+    playerId,
+    color
+  } = response.data;
+
+  req.app.games.addGame(new Game(gameId, playersCount));
+  const currentGame = getCurrentGame(req, gameId);
+  currentGame.addPlayer(new Player(playerId, hostName, color));
+  res.send({ gameId, playerId });
 };
 
 const getPlayers = async (req, res) => {
-  const { gameId } = req.body;
-  const response = await makeCall({ gameId }, '/players');
-  res.send(response.data);
+  const currentGame = getCurrentGame(req);
+  res.send(currentGame);
 };
 
 const joinGame = async (req, res) => {
+  const currentGame = getCurrentGame(req);
   const { playerName, gameId } = req.body;
   const response = await makeCall({ playerName, gameId }, '/joinGame');
+  const { playerId, color } = response;
+  currentGame.addPlayer(new Player(playerId, playerName, color));
   res.send(response.data);
 };
 

@@ -1,9 +1,12 @@
+const CoinSet = require('./coinSet');
+
 class Player {
-  constructor(name, id, coins) {
+  constructor(id, name, color) {
     this.name = name;
     this.id = id;
-    this.coins = coins;
+    this.color = color;
+    this.coins = new CoinSet(color);
   }
 }
 
-exports.Player = Player;
+module.exports = Player;

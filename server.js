@@ -1,8 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const Games = require('./model/games');
 
 const app = express();
+
+app.games = new Games();
 
 const PORT = process.env.API_PORT;
 

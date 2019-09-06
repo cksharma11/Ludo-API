@@ -9,4 +9,4 @@ class Coin {
   }
 }
 
-exports.Coin = Coin;
+module.exports = Coin;

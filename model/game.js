@@ -1,8 +1,25 @@
 class Game {
-  constructor(players, dice) {
-    this.players = players;
-    this.dice = dice;
+  constructor(id, numberOfPlayers) {
+    this.players = [];
+    this.order = [];
+    this.numberOfPlayers = +numberOfPlayers;
+    this.id = id;
+    this.currentPlayerIndex = 0;
+    this.isStarted = false;
+  }
+
+  hasStarted() {
+    this.isStarted = this.players.length === this.numberOfPlayers;
+  }
+
+  addPlayer(player) {
+    this.players.push(player);
+    this.hasStarted();
+  }
+
+  getPlayers() {
+    return this.players;
   }
 }
 
-exports.Game = Game;
+module.exports = Game;
