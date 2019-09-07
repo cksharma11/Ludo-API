@@ -21,7 +21,7 @@ const createGame = async (req, res) => {
 
 const getPlayers = async (req, res) => {
   const currentGame = getCurrentGame(req);
-  res.send(JSON.stringify(currentGame));
+  res.send(JSON.parse(JSON.stringify(currentGame)));
 };
 
 const joinGame = async (req, res) => {
