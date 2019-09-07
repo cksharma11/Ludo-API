@@ -16,12 +16,12 @@ const createGame = async (req, res) => {
   req.app.games.addGame(new Game(gameId, playersCount));
   const currentGame = getCurrentGame(req, gameId);
   currentGame.addPlayer(new Player(playerId, hostName, color));
-  res.send({ gameId, playerId });
+  res.send(JSON.stringify({ gameId, playerId }));
 };
 
 const getPlayers = async (req, res) => {
   const currentGame = getCurrentGame(req);
-  res.send(currentGame);
+  res.send(JSON.stringify(currentGame));
 };
 
 const joinGame = async (req, res) => {
@@ -30,7 +30,7 @@ const joinGame = async (req, res) => {
   const response = await makeCall({ playerName, gameId }, '/joinGame');
   const { playerId, color } = response.data;
   currentGame.addPlayer(new Player(playerId, playerName, color));
-  res.send(response.data);
+  res.send(JSON.stringify(response.data));
 };
 
 module.exports = {

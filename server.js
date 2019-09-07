@@ -7,7 +7,7 @@ const app = express();
 
 app.games = new Games();
 
-const PORT = process.env.API_PORT;
+const PORT = process.env.PORT || process.env.API_PORT;
 
 const { createGame, getPlayers, joinGame } = require('./src/setup/handlers');
 
