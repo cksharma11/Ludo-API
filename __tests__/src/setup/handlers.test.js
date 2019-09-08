@@ -7,7 +7,7 @@ const {
 
 jest.mock('axios');
 
-xdescribe('handlers', () => {
+describe('handlers', () => {
   let req;
   let res;
   let responseData;
@@ -15,7 +15,32 @@ xdescribe('handlers', () => {
     responseData = {};
     req = {
       headers: {},
-      body: {}
+      body: {},
+      app: {
+        games: {
+          1: {
+            players: [],
+            order: [],
+            currentPlayerIndex: 0,
+            addPlayer: jest.fn()
+          },
+          11: {
+            players: [],
+            order: [],
+            currentPlayerIndex: 0,
+            addPlayer: jest.fn()
+          },
+          addGame: jest.fn(),
+          getGame: () => {
+            return {
+              players: [],
+              order: [],
+              currentPlayerIndex: 0,
+              addPlayer: jest.fn()
+            };
+          }
+        }
+      }
     };
     res = {
       send: () => responseData
@@ -53,11 +78,15 @@ xdescribe('handlers', () => {
 
   it('should call getPlayers with correct args', async () => {
     req.body = { gameId: 11 };
+    res.send = jest.fn();
     await getPlayers(req, res);
 
-    expect(axios.post).toHaveBeenCalledTimes(1);
-    expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/players', {
-      gameId: 11
-    });
+    const response = {
+      players: [],
+      order: [],
+      currentPlayerIndex: 0
+    };
+
+    expect(res.send).toHaveBeenCalledWith(expect.objectContaining(response));
   });
 });

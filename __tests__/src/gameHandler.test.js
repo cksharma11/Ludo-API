@@ -5,7 +5,7 @@ const httpService = require('../../src/httpService');
 jest.mock('axios');
 jest.mock('../../src/httpService');
 
-xdescribe('handlers', () => {
+describe('handlers', () => {
   let req;
   let res;
   beforeEach(() => {
@@ -13,8 +13,25 @@ xdescribe('handlers', () => {
       app: {
         games: {
           1: {
-            getGame: () => {},
-            addGame: () => {}
+            players: [],
+            order: [],
+            currentPlayerIndex: 0,
+            addPlayer: jest.fn()
+          },
+          11: {
+            players: [],
+            order: [],
+            currentPlayerIndex: 0,
+            addPlayer: jest.fn()
+          },
+          addGame: jest.fn(),
+          getGame: () => {
+            return {
+              players: [],
+              order: [],
+              currentPlayerIndex: 0,
+              addPlayer: jest.fn()
+            };
           }
         }
       },
@@ -57,26 +74,15 @@ xdescribe('handlers', () => {
     );
 
     const responseData = {
-      currentPlayerId: 'DummyId',
-      gameId: 1,
-      players: [
-        {
-          coins: { '1': 0, '2': 0, '3': 0, '4': 0 },
-          color: 'red',
-          playerId: 'DummyId',
-          playerName: 'DummyName'
-        }
-      ],
-      turn: 0
+      currentPlayerIndex: 0,
+      order: [],
+      players: []
     };
 
     await getGameData(req, res);
 
-    expect(httpService.makeCall).toHaveBeenCalledTimes(1);
-    expect(httpService.makeCall).toHaveBeenCalledWith(
-      { gameId: 1 },
-      '/players'
+    expect(res.send).toHaveBeenCalledWith(
+      expect.objectContaining(responseData)
     );
-    expect(res.send).toHaveBeenCalledWith(responseData);
   });
 });

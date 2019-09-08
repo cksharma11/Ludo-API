@@ -11,6 +11,7 @@ class CoinSet {
     this.coins.push(new Coin(this.color));
     this.coins.push(new Coin(this.color));
     this.coins.push(new Coin(this.color));
+    return this.coins;
   }
 }
 
