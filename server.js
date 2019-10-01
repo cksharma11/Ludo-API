@@ -9,7 +9,7 @@ app.games = new Games();
 
 const PORT = process.env.PORT || process.env.API_PORT;
 
-const { createGame, getPlayers, joinGame } = require('./src/setup/handlers');
+const gameHandlers = require('./src/setup/handlers');
 
 const { getGameData, rollDice } = require('./src/gameHandler');
 
@@ -27,9 +27,11 @@ app.get('/', (req, res) => {
   res.send('Hello API!');
 });
 
-app.post('/createGame', createGame);
-app.post('/players', getPlayers);
-app.post('/joinGame', joinGame);
+app.post('/saveGame', gameHandlers.saveGame);
+app.post('/loadGame', gameHandlers.loadGame);
+app.post('/createGame', gameHandlers.createGame);
+app.post('/players', gameHandlers.getPlayers);
+app.post('/joinGame', gameHandlers.joinGame);
 app.post('/getGameData', getGameData);
 app.post('/rollDice', rollDice);
 

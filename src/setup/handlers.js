@@ -33,8 +33,31 @@ const joinGame = async (req, res) => {
   res.send(JSON.stringify(response.data));
 };
 
+const loadGame = async (req, res) => {
+  // const { gameId, playerId } = req.body;
+  // const response = await makeCall({ gameId }, '/loadGame');
+  res.end();
+};
+
+const saveGame = async (req, res) => {
+  const currentGame = req.body; // getCurrentGame(req);
+  const { currentPlayerIndex, diceValue, id: gameId, players } = currentGame;
+  await makeCall({ currentPlayerIndex, diceValue, gameId }, '/save/game');
+
+  players.forEach(async (player) => {
+    const { coins, id: playerId } = player;
+    coins.forEach(async (coin) => {
+      const { number, position } = coin;
+      await makeCall({ number, position, playerId, gameId }, '/save/coins');
+    });
+  });
+  res.end();
+};
+
 module.exports = {
   createGame,
   getPlayers,
-  joinGame
+  joinGame,
+  loadGame,
+  saveGame
 };

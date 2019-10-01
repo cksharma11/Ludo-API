@@ -7,10 +7,10 @@ class CoinSet {
   }
 
   createSet() {
-    this.coins.push(new Coin(this.color));
-    this.coins.push(new Coin(this.color));
-    this.coins.push(new Coin(this.color));
-    this.coins.push(new Coin(this.color));
+    this.coins.push(new Coin(1));
+    this.coins.push(new Coin(2));
+    this.coins.push(new Coin(3));
+    this.coins.push(new Coin(4));
     return this.coins;
   }
 }

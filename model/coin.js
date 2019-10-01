@@ -1,6 +1,6 @@
 class Coin {
-  constructor(color) {
-    this.color = color;
+  constructor(number) {
+    this.number = number;
     this.position = 0;
   }
 
