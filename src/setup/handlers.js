@@ -1,4 +1,5 @@
 const { makeCall } = require('../httpService');
+const { mapGameData } = require('../map/objectMapper');
 const Game = require('../../model/game');
 const Player = require('../../model/player');
 const { getCurrentGame } = require('../util/util');
@@ -34,13 +35,19 @@ const joinGame = async (req, res) => {
 };
 
 const loadGame = async (req, res) => {
-  // const { gameId, playerId } = req.body;
-  // const response = await makeCall({ gameId }, '/loadGame');
-  res.end();
+  const { gameId } = req.body;
+  const { data: gameData } = await makeCall({ gameId }, '/load/game');
+  if (!gameData.length) {
+    res.send(JSON.stringify({ error: 'NOT FOUND' }));
+    return;
+  }
+  const game = await mapGameData(gameId, gameData[0]);
+  req.app.games.addGame(game);
+  res.send(game);
 };
 
 const saveGame = async (req, res) => {
-  const currentGame = req.body; // getCurrentGame(req);
+  const currentGame = getCurrentGame(req);
   const { currentPlayerIndex, diceValue, id: gameId, players } = currentGame;
   await makeCall({ currentPlayerIndex, diceValue, gameId }, '/save/game');
 
