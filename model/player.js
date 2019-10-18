@@ -5,7 +5,11 @@ class Player {
     this.name = name;
     this.id = id;
     this.color = color;
-    this.coins = new CoinSet(color).createSet();
+    this.coins = new CoinSet().createSet();
+  }
+
+  setCoins(coins) {
+    this.coins = coins;
   }
 }
 

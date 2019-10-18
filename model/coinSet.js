@@ -1,9 +1,12 @@
 const Coin = require('./coin');
 
 class CoinSet {
-  constructor(color) {
-    this.color = color;
+  constructor() {
     this.coins = [];
+  }
+
+  setCoins(coins) {
+    this.coins = coins;
   }
 
   createSet() {

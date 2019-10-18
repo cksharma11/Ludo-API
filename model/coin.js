@@ -4,6 +4,10 @@ class Coin {
     this.position = 0;
   }
 
+  setPosition(position) {
+    this.position = position;
+  }
+
   moveCoin(nextPosition) {
     this.position = nextPosition;
   }

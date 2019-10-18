@@ -4,9 +4,26 @@ class Game {
     this.order = [];
     this.numberOfPlayers = +numberOfPlayers;
     this.id = id;
+    this.status = false;
     this.currentPlayerIndex = 0;
     this.isStarted = false;
     this.diceValue = 1;
+  }
+
+  setCurrentPlayerIndex(currentPlayerIndex) {
+    this.currentPlayerIndex = currentPlayerIndex;
+  }
+
+  setDiceValue(diceValue) {
+    this.diceValue = diceValue;
+  }
+
+  setStatus(status) {
+    this.status = status;
+  }
+
+  setPlayers(players) {
+    this.players = players;
   }
 
   updateTurn() {
