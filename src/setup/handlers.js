@@ -53,7 +53,8 @@ const saveGame = async (req, res) => {
 
   players.forEach(async (player) => {
     const { coins, id: playerId } = player;
-    coins.forEach(async (coin) => {
+    const { coins: coinSet } = coins;
+    coinSet.forEach(async (coin) => {
       const { number, position } = coin;
       await makeCall({ number, position, playerId, gameId }, '/save/coins');
     });

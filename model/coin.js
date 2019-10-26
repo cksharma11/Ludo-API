@@ -11,6 +11,10 @@ class Coin {
   moveCoin(nextPosition) {
     this.position = nextPosition;
   }
+
+  getPosition() {
+    return this.position;
+  }
 }
 
 module.exports = Coin;

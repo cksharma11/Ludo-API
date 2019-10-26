@@ -2,19 +2,15 @@ const Coin = require('./coin');
 
 class CoinSet {
   constructor() {
-    this.coins = [];
+    this.coins = [new Coin(1), new Coin(2), new Coin(3), new Coin(4)];
   }
 
   setCoins(coins) {
     this.coins = coins;
   }
 
-  createSet() {
-    this.coins.push(new Coin(1));
-    this.coins.push(new Coin(2));
-    this.coins.push(new Coin(3));
-    this.coins.push(new Coin(4));
-    return this.coins;
+  getActiveCoins() {
+    return this.coins.filter((coin) => coin.position);
   }
 }
 

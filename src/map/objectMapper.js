@@ -17,6 +17,7 @@ const mapToGameClass = (args) => {
   gameObject.setStatus(status);
   gameObject.setDiceValue(diceValue);
   gameObject.setCurrentPlayerIndex(currentPlayerIndex);
+  gameObject.startGame();
   return gameObject;
 };
 
