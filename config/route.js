@@ -1,16 +1,11 @@
+const { WINNING_POSITION } = require('../src/util/constant');
+
 const safeCells = {
   blue: [5, 6, 8, 11, 14, 17],
   red: [22, 23, 26, 29, 32, 35],
   yellow: [38, 41, 44, 47, 50, 51],
   green: [56, 59, 62, 65, 67, 68],
   universal: [22, 27, 7, 46, 51, 66, 22, 6, 51, 67]
-};
-
-const startingCells = {
-  blue: 1,
-  red: 19,
-  yellow: 37,
-  green: 55
 };
 
 const routes = {
@@ -70,7 +65,8 @@ const routes = {
     26,
     29,
     32,
-    35
+    35,
+    WINNING_POSITION
   ],
   blue: [
     6,
@@ -128,7 +124,8 @@ const routes = {
     8,
     11,
     14,
-    17
+    17,
+    WINNING_POSITION
   ],
   yellow: [
     51,
@@ -186,7 +183,8 @@ const routes = {
     47,
     44,
     41,
-    38
+    38,
+    WINNING_POSITION
   ],
   green: [
     67,
@@ -244,9 +242,10 @@ const routes = {
     65,
     62,
     59,
-    56
+    56,
+    WINNING_POSITION
   ],
   safe: [22, 27, 7, 46, 51, 66]
 };
 
-module.exports = { safeCells, startingCells, routes };
+module.exports = { safeCells, routes };

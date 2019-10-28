@@ -3,6 +3,9 @@ const PHASE = {
   PLACE_COIN: 1
 };
 
+const WINNING_POSITION = 100;
+
 module.exports = {
-  PHASE
+  PHASE,
+  WINNING_POSITION
 };
