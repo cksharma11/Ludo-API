@@ -1,4 +1,5 @@
-const { isValidCoinPosition } = require('../src/util/util');
+const { isValidCoinPosition, isSafePosition } = require('../src/util/util');
+const { PHASE } = require('../src/util/constant');
 
 class Game {
   constructor(id, numberOfPlayers) {
@@ -15,17 +16,33 @@ class Game {
     this.phase = 0;
   }
 
+  getWinningPlayer() {
+    return this.players.find((player) => !player.canPlay);
+  }
+
+  startRollDicePhase() {
+    this.phase = PHASE.ROLL_DICE;
+  }
+
+  startPlaceCoinPhase() {
+    this.phase = PHASE.PLACE_COIN;
+  }
+
   eliminateCoin(currentPlayer, position) {
-    const coins = this.coinsPosition.filter(
-      (coin) => coin.position === position
-    );
-    if (coins.length === 1) {
-      const enemyPlayer = coins.find(
-        (coin) => coin.playerId !== currentPlayer.id
+    if (!isSafePosition(position)) {
+      const coins = this.coinsPosition.filter(
+        (coin) => coin.position === position
       );
-      if (enemyPlayer) {
-        const player = this.players.find((x) => x.id === enemyPlayer.playerId);
-        player.eliminateCoin(position);
+      if (coins.length === 1) {
+        const enemyPlayer = coins.find(
+          (coin) => coin.playerId !== currentPlayer.id
+        );
+        if (enemyPlayer) {
+          const player = this.players.find(
+            (x) => x.id === enemyPlayer.playerId
+          );
+          player.eliminateCoin(position);
+        }
       }
     }
   }
@@ -33,13 +50,18 @@ class Game {
   changeCurrentPlayerCoinPosition(coinNumber) {
     const currentPlayer = this.getCurrentPlayer();
     const coinPosition = this.rolledValues.shift();
-    if (isValidCoinPosition(coinNumber, coinPosition)) {
+    const validCoinPosition = isValidCoinPosition({
+      coinNumber,
+      diceValue: coinPosition,
+      coins: currentPlayer.coins.coins,
+      color: currentPlayer.color
+    });
+    if (validCoinPosition) {
       currentPlayer.setCoinPosition(coinNumber, coinPosition);
       const updatedPosition = currentPlayer.getCoinPosition(coinNumber);
       this.eliminateCoin(currentPlayer, updatedPosition);
       if (!this.rolledValues.length) {
         this.updateTurn();
-        this.phase = 0;
       }
     } else {
       this.rolledValues.push(coinPosition);
@@ -69,6 +91,11 @@ class Game {
   updateTurn() {
     this.currentPlayerIndex =
       (this.currentPlayerIndex + 1) % this.numberOfPlayers;
+    this.rolledValues = [];
+    if (this.players[this.currentPlayerIndex].hasWon) {
+      this.updateTurn();
+    }
+    this.startRollDicePhase();
   }
 
   isDiceRolledSix() {
@@ -84,8 +111,16 @@ class Game {
     if (this.isDiceRolledSix()) {
       this.rolledValues.push(this.diceValue);
     } else {
+      const currentPlayer = this.getCurrentPlayer();
       this.rolledValues.push(this.diceValue);
-      this.phase = 1 - this.phase;
+      this.startPlaceCoinPhase();
+
+      if (
+        !currentPlayer.canMoveCoin(this.diceValue) &&
+        !this.rolledValues.includes(6)
+      ) {
+        this.updateTurn();
+      }
     }
   }
 

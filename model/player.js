@@ -1,3 +1,7 @@
+const { isNewPositionValid } = require('../src/util/util');
+
+const { WINNING_POSITION } = require('../src/util/constant');
+
 const CoinSet = require('./coinSet');
 const {
   getCoinPositionIndex,
@@ -11,6 +15,33 @@ class Player {
     this.id = id;
     this.color = color;
     this.coins = new CoinSet();
+    this.canPlay = true;
+    this.hasWon = false;
+  }
+
+  hasPlayableCoins(diceValue) {
+    return this.coins.coins.some((coin) =>
+      isNewPositionValid({
+        diceValue,
+        position: coin.position,
+        color: this.color
+      })
+    );
+  }
+
+  updateWinningStatus() {
+    const won = this.coins.coins.every(
+      (coin) => coin.position === WINNING_POSITION
+    );
+    if (won) {
+      this.hasWon = true;
+      this.canPlay = false;
+    }
+  }
+
+  canMoveCoin(diceValue) {
+    const hasOpenCoin = this.coins.coins.some((coin) => coin.position > 0);
+    return hasOpenCoin && this.hasPlayableCoins(diceValue);
   }
 
   eliminateCoin(coinPosition) {
@@ -26,7 +57,7 @@ class Player {
     this.coins = coins;
   }
 
-  setCoinPosition(coinNumber, diceValue = 2) {
+  setCoinPosition(coinNumber, diceValue) {
     const selectedCoin = this.coins.coins.find((x) => x.number === +coinNumber);
     const { position } = selectedCoin;
     if (position) {
@@ -38,6 +69,7 @@ class Player {
       const newPositionIndex = diceValue + selectedCoinPositionIndex;
       const newPosition = getRouteNewValue(this.color, newPositionIndex);
       selectedCoin.setPosition(newPosition);
+      this.updateWinningStatus();
     } else if (diceValue === 6) {
       const firstValue = getRouteFirstValue(this.color);
       selectedCoin.setPosition(firstValue);
