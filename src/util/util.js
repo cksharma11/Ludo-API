@@ -12,23 +12,30 @@ const getRouteNewValue = (color, index) => routes[color][index];
 
 const getRouteFirstValue = (color) => routes[color][0];
 
-const isValidCoinPosition = (coinNumber, diceValue) => {
-  const selectedCoin = this.coins.coins.find((x) => x.number === +coinNumber);
+const isNewPositionValid = ({ color, position, diceValue }) => {
+  const selectedCoinPositionIndex = getCoinPositionIndex(color, position);
+  const newPositionIndex = diceValue + selectedCoinPositionIndex;
+  const newPosition = getRouteNewValue(color, newPositionIndex);
+  return !!newPosition;
+};
+
+const isValidCoinPosition = ({ coinNumber, diceValue, coins, color }) => {
+  const selectedCoin = coins.find((x) => x.number === +coinNumber);
   const { position } = selectedCoin;
   if (!position && diceValue !== 6) {
     return false;
   }
-  const selectedCoinPositionIndex = getCoinPositionIndex(this.color, position);
-  const newPositionIndex = diceValue + selectedCoinPositionIndex;
-  const newPosition = getRouteNewValue(this.color, newPositionIndex);
-
-  return !!newPosition;
+  return !!isNewPositionValid({ color, position, diceValue });
 };
+
+const isSafePosition = (position) => routes.safe.includes(position);
 
 module.exports = {
   getCurrentGame,
   getCoinPositionIndex,
   getRouteNewValue,
   getRouteFirstValue,
-  isValidCoinPosition
+  isValidCoinPosition,
+  isSafePosition,
+  isNewPositionValid
 };

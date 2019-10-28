@@ -20,6 +20,7 @@ const getCoinsPosition = (currentGame) => {
 const getGameData = (req, res) => {
   const currentGame = getCurrentGame(req);
   currentGame.coinsPosition = getCoinsPosition(currentGame);
+  currentGame.winningPlayer = currentGame.getWinningPlayer();
   res.send(currentGame);
 };
 
