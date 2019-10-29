@@ -2,6 +2,7 @@ const Game = require('../../model/game');
 const Player = require('../../model/player');
 const Coin = require('../../model/coin');
 const CoinSet = require('../../model/coinSet');
+const ActivityLog = require('../../model/activityLog');
 const { makeCall } = require('../httpService');
 
 const mapToGameClass = (args) => {
@@ -42,6 +43,17 @@ const mapToCoinSetClass = (args) => {
   return coinSetObject;
 };
 
+const mapToActivityLog = (args) => {
+  const activitylog = new ActivityLog();
+  args.forEach((arg) => {
+    const { gameLogId, message, logTime } = arg;
+    activitylog.logs.unshift({ id: gameLogId, message, time: logTime });
+  });
+  const lastId = activitylog.logs[0].id;
+  activitylog.id = lastId;
+  return activitylog;
+};
+
 const mapGameData = async (gameId, gameData) => {
   const game = mapToGameClass(gameData);
   const { data: playersData } = await makeCall({ gameId }, '/load/players');
@@ -58,6 +70,8 @@ const mapGameData = async (gameId, gameData) => {
       return player;
     })
   );
+  const { data: logs } = await makeCall({ gameId }, '/load/activitylog');
+  game.activityLog = mapToActivityLog(logs);
   game.setPlayers(mappedPlayers);
   return game;
 };
