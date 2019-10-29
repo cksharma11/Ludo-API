@@ -5,7 +5,15 @@ const PHASE = {
 
 const WINNING_POSITION = 100;
 
+const COUNT_POSTFIX = {
+  1: 'st',
+  2: 'nd',
+  3: 'rd',
+  4: 'th'
+};
+
 module.exports = {
   PHASE,
-  WINNING_POSITION
+  WINNING_POSITION,
+  COUNT_POSTFIX
 };

@@ -33,6 +33,15 @@ const isValidCoinPosition = ({ coinNumber, diceValue, coins, color }) => {
 
 const isSafePosition = (position) => routes.safe.includes(position);
 
+const getCurrentTime = () => {
+  const time = new Date().toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  });
+  return time;
+};
+
 module.exports = {
   getCurrentGame,
   getCoinPositionIndex,
@@ -40,5 +49,6 @@ module.exports = {
   getRouteFirstValue,
   isValidCoinPosition,
   isSafePosition,
-  isNewPositionValid
+  isNewPositionValid,
+  getCurrentTime
 };
