@@ -52,6 +52,7 @@ const loadGame = async (req, res) => {
 
 const saveGame = async (req, res) => {
   const currentGame = getCurrentGame(req);
+  const { logs } = currentGame.activityLog;
   const { currentPlayerIndex, diceValue, id: gameId, players } = currentGame;
   await makeCall({ currentPlayerIndex, diceValue, gameId }, '/save/game');
 
@@ -63,6 +64,7 @@ const saveGame = async (req, res) => {
       await makeCall({ number, position, playerId, gameId }, '/save/coins');
     });
   });
+  await makeCall({ logs, gameId }, '/save/activityLog');
   res.send({});
 };
 

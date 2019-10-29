@@ -19,6 +19,10 @@ class Player {
     this.hasWon = false;
   }
 
+  getHomeCoinsCount() {
+    return this.coins.coins.filter((coin) => coin.position === 100).length;
+  }
+
   getCoinsStatus(diceValue) {
     return this.coins.coins.map((coin) => ({
       ...coin,

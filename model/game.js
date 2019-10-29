@@ -1,6 +1,8 @@
 const { isValidCoinPosition, isSafePosition } = require('../src/util/util');
 const { PHASE } = require('../src/util/constant');
 
+const ActivityLog = require('./activityLog');
+
 class Game {
   constructor(id, numberOfPlayers) {
     this.players = [];
@@ -14,6 +16,7 @@ class Game {
     this.rolledValues = [];
     this.coinsPosition = [];
     this.phase = 0;
+    this.activityLog = new ActivityLog();
   }
 
   getWinningPlayer() {
@@ -41,6 +44,7 @@ class Game {
     if (enemyPlayer) {
       const player = this.players.find((x) => x.id === enemyPlayer.playerId);
       player.eliminateCoin(position);
+      this.activityLog.attack(currentPlayer.name, enemyPlayer.name);
     }
   }
 
@@ -67,12 +71,18 @@ class Game {
     }
     const currentPlayer = this.getCurrentPlayer();
     const position = currentPlayer.getCoinPosition(coinNumber);
-    return position === 100;
+    if (position === 100) {
+      const numberOfCoins = currentPlayer.getHomeCoinsCount();
+      this.activityLog.reachedHome(currentPlayer.name, numberOfCoins);
+      return true;
+    }
+    return false;
   }
 
   updatePlayerCoinPosition(coinNumber, diceValue) {
     const currentPlayer = this.getCurrentPlayer();
     currentPlayer.setCoinPosition(coinNumber, diceValue);
+    this.activityLog.placeCoin(currentPlayer.name);
     const updatedPosition = currentPlayer.getCoinPosition(coinNumber);
 
     const coinEliminated = this.eliminateCoin(updatedPosition);
@@ -142,10 +152,12 @@ class Game {
 
   updateTurn() {
     const nextPlayerIndex = this.currentPlayerIndex + 1;
-    const nextPlayer = this.players[nextPlayerIndex];
     this.currentPlayerIndex = nextPlayerIndex % this.numberOfPlayers;
+    const nextPlayer = this.players[this.currentPlayerIndex];
     if (nextPlayer.hasWon) {
       this.updateTurn();
+    } else {
+      this.activityLog.changeTurn(nextPlayer.name);
     }
     this.rolledValues = [];
     this.startRollDicePhase();
@@ -173,7 +185,9 @@ class Game {
   }
 
   rollDice() {
+    const currentPlayer = this.getCurrentPlayer();
     this.diceValue = Math.ceil(Math.random() * 6);
+    this.activityLog.rollDice(currentPlayer.name, this.diceValue);
     this.rolledValues.push(this.diceValue);
 
     if (this.isDiceRolledSix()) {

@@ -29,6 +29,7 @@ const getGameData = (req, res) => {
   const currentGame = getCurrentGame(req);
   currentGame.coinsPosition = getCoinsPosition(currentGame);
   currentGame.winningPlayer = currentGame.getWinningPlayer();
+  currentGame.lastLog = currentGame.activityLog.getLatestLog();
   res.send(currentGame);
 };
 
