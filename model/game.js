@@ -49,22 +49,28 @@ class Game {
 
   changeCurrentPlayerCoinPosition(coinNumber) {
     const currentPlayer = this.getCurrentPlayer();
-    const coinPosition = this.rolledValues.shift();
+    const diceValue = this.rolledValues.shift();
+    if (!diceValue) {
+      this.updateTurn();
+      return;
+    }
     const validCoinPosition = isValidCoinPosition({
       coinNumber,
-      diceValue: coinPosition,
+      diceValue,
       coins: currentPlayer.coins.coins,
       color: currentPlayer.color
     });
     if (validCoinPosition) {
-      currentPlayer.setCoinPosition(coinNumber, coinPosition);
+      currentPlayer.setCoinPosition(coinNumber, diceValue);
       const updatedPosition = currentPlayer.getCoinPosition(coinNumber);
       this.eliminateCoin(currentPlayer, updatedPosition);
       if (!this.rolledValues.length) {
         this.updateTurn();
       }
+    } else if (!currentPlayer.canMoveCoin(diceValue)) {
+      this.changeCurrentPlayerCoinPosition(coinNumber);
     } else {
-      this.rolledValues.push(coinPosition);
+      this.rolledValues.push(diceValue);
     }
   }
 
@@ -110,6 +116,9 @@ class Game {
     this.diceValue = Math.ceil(Math.random() * 6);
     if (this.isDiceRolledSix()) {
       this.rolledValues.push(this.diceValue);
+      if (JSON.stringify(this.rolledValues) === JSON.stringify([6, 6, 6])) {
+        this.updateTurn();
+      }
     } else {
       const currentPlayer = this.getCurrentPlayer();
       this.rolledValues.push(this.diceValue);
