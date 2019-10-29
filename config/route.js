@@ -245,7 +245,7 @@ const routes = {
     56,
     WINNING_POSITION
   ],
-  safe: [22, 27, 7, 46, 51, 66]
+  safe: [22, 27, 7, 46, 51, 66, 22, 6, 51, 67]
 };
 
 module.exports = { safeCells, routes };
