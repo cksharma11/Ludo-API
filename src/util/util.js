@@ -14,6 +14,9 @@ const getRouteFirstValue = (color) => routes[color][0];
 
 const isNewPositionValid = ({ color, position, diceValue }) => {
   const selectedCoinPositionIndex = getCoinPositionIndex(color, position);
+  if (selectedCoinPositionIndex === 0 && diceValue !== 6) {
+    return false;
+  }
   const newPositionIndex = diceValue + selectedCoinPositionIndex;
   const newPosition = getRouteNewValue(color, newPositionIndex);
   return !!newPosition;

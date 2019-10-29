@@ -34,10 +34,10 @@ const rollDice = (req, res) => {
 
 const coinPositionHandler = (req, res) => {
   const currentGame = getCurrentGame(req);
-  const { id, playerId } = req.body;
+  const { id, color } = req.body;
   if (currentGame.phase === PHASE.PLACE_COIN) {
     const currentPlayer = currentGame.getCurrentPlayer();
-    if (currentPlayer.id === +playerId) {
+    if (currentPlayer.color === color) {
       currentGame.changeCurrentPlayerCoinPosition(id);
     }
   }
