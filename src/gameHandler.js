@@ -1,17 +1,25 @@
 const { getCurrentGame } = require('./util/util');
 const { PHASE } = require('./util/constant');
 
+const getCoinDetail = ({ coin, player, isCurrentPlayer }) => {
+  const { number: id, position, isPlayable } = coin;
+  return {
+    color: player.color,
+    playerId: player.id,
+    position,
+    id,
+    isPlayable: isCurrentPlayer ? isPlayable : false
+  };
+};
 const getCoinsPosition = (currentGame) => {
   const coinsPosition = [];
+  const diceValue = currentGame.rolledValues[0];
   currentGame.players.forEach((player) => {
-    player.coins.coins.forEach((coin) => {
-      const { number, position } = coin;
-      coinsPosition.push({
-        color: player.color,
-        position,
-        id: number,
-        playerId: player.id
-      });
+    const coinsStatus = player.getCoinsStatus(diceValue);
+    const currentPlayer = currentGame.getCurrentPlayer();
+    const isCurrentPlayer = currentPlayer.id === player.id;
+    coinsStatus.forEach((coin) => {
+      coinsPosition.push(getCoinDetail({ coin, player, isCurrentPlayer }));
     });
   });
   return coinsPosition;

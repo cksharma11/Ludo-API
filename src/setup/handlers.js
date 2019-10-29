@@ -22,7 +22,11 @@ const createGame = async (req, res) => {
 
 const getPlayers = async (req, res) => {
   const currentGame = getCurrentGame(req);
-  res.send(JSON.parse(JSON.stringify(currentGame)));
+  if (currentGame) {
+    res.send(JSON.parse(JSON.stringify(currentGame)));
+    return;
+  }
+  res.send({});
 };
 
 const joinGame = async (req, res) => {
@@ -59,7 +63,7 @@ const saveGame = async (req, res) => {
       await makeCall({ number, position, playerId, gameId }, '/save/coins');
     });
   });
-  res.end();
+  res.send({});
 };
 
 module.exports = {
