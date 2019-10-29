@@ -19,14 +19,19 @@ class Player {
     this.hasWon = false;
   }
 
-  hasPlayableCoins(diceValue) {
-    return this.coins.coins.some((coin) =>
-      isNewPositionValid({
+  getCoinsStatus(diceValue) {
+    return this.coins.coins.map((coin) => ({
+      ...coin,
+      isPlayable: isNewPositionValid({
         diceValue,
         position: coin.position,
         color: this.color
       })
-    );
+    }));
+  }
+
+  hasPlayableCoins(diceValue) {
+    return this.getCoinsStatus(diceValue).some((x) => x.isPlayable);
   }
 
   updateWinningStatus() {
@@ -37,11 +42,6 @@ class Player {
       this.hasWon = true;
       this.canPlay = false;
     }
-  }
-
-  canMoveCoin(diceValue) {
-    const hasOpenCoin = this.coins.coins.some((coin) => coin.position > 0);
-    return hasOpenCoin && this.hasPlayableCoins(diceValue);
   }
 
   eliminateCoin(coinPosition) {
