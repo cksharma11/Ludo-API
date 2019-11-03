@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Game = require('../../model/game');
 const Player = require('../../model/player');
 const Coin = require('../../model/coin');
@@ -49,7 +50,7 @@ const mapToActivityLog = (args) => {
     const { gameLogId, message, logTime } = arg;
     activitylog.logs.unshift({ id: gameLogId, message, time: logTime });
   });
-  const lastId = activitylog.logs[0].id;
+  const lastId = _.get(activitylog, 'logs[0].id');
   activitylog.id = lastId;
   return activitylog;
 };

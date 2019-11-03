@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "export DB_URL=https://ludo-pro-db.herokuapp.com && node server.js",
     "test": "jest --passWithNoTests",
     "open": "export UI_PORT=3030 && export API_PORT=4040 && export DB_PORT=5050 && nodemon server.js",
     "lint:script": "eslint . -c .eslintrc.json --ext js,jsx --fix",
@@ -19,7 +19,8 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "eslint": "^5.16.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "babel-jest": "^24.1.0",
